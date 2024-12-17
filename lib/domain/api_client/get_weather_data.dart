@@ -6,12 +6,19 @@ import 'package:weather_app/domain/entity/weather.dart';
 class ApiWeatherData {
   Future<List<WeatherData>> fetchWeather() async {
     final response = await http.get(Uri.parse(Configutation.host));
+
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = json.decode(response.body);
-      List<dynamic> weatherData = data['weather' 'main' 'sys'];
-      return weatherData.map((json) => WeatherData.fromJson(json)).toList();
+      final Map<String, dynamic> data = json.decode(response.body);
+
+      // Проверяем, что данные содержат массив weather
+      if (data.containsKey('weather')) {
+        final List<dynamic> weatherList = data['weather'];
+        return weatherList.map((e) => WeatherData.fromJson(e)).toList();
+      } else {
+        throw Exception('Ключ "weather" отсутствует в данных');
+      }
     } else {
-      throw Exception('Не удалось загрузить данные');
+      throw Exception('Ошибка загрузки: ${response.statusCode}');
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:weather_app/data_provider/city_data_provider.dart';
+import '../../../../data_provider/weather_data_provider.dart';
 import '../../../../domain/entity/list_city.dart';
 import '../../../../domain/entity/weather.dart';
 
@@ -30,11 +31,29 @@ class WeatherScreenState {
 
 class WeatherScreenCubit extends Cubit<WeatherScreenState> {
   final _dataProvider = CityDataProvider();
+  final _weatherProvider = WeatherDataProvider();
 
   WeatherScreenCubit(WeatherScreenState weatherScreenState)
       : super(WeatherScreenState.initial()) {
     getUsersCity();
+    getWeather();
   }
+
+  void getWeather() async {
+    try {
+      final weather = await _weatherProvider.getWeatherData();
+
+      if (weather.isNotEmpty) {
+        final newState = state.copyWith(weatherData: weather);
+        emit(newState);
+      } else {
+        throw Exception('Погода не найдена');
+      }
+    } catch (e) {
+      print('Ошибка загрузки погоды: $e');
+    }
+  }
+
 
   void tabList() {
     if (state.usersCity.isNotEmpty) {
