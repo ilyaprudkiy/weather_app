@@ -6,7 +6,7 @@ class WeatherDataProvider {
   final _apiWeather = ApiWeatherData();
 
   Future<List<WeatherData>> getWeatherData() async {
-    final weather = await _apiWeather.fetchWeather();
+    final weather = await _apiWeather.fetchWeather(lat: '51.509865', lon: '-0.118092');
     return weather;
   }
 }

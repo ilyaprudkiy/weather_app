@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:weather_app/utils/cities_loader.dart';
 part 'list_city.g.dart';
 
 @HiveType(typeId: 1)
@@ -30,84 +31,5 @@ class City {
       isDefault: isDefault ?? this.isDefault,
     );
   }
-
-
-  static List<City> citiesList = [
-    City(
-        isSelected: false,
-        name: 'London',
-        country: 'United Kindgom',
-        isDefault: true),
-    City(
-        isSelected: false,
-        name: 'Tokyo',
-        country: 'Japan',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Delhi',
-        country: 'India',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Beijing',
-        country: 'China',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Paris',
-        country: 'Paris',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Rome',
-        country: 'Italy',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Lagos',
-        country: 'Nigeria',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Amsterdam',
-        country: 'Netherlands',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Barcelona',
-        country: 'Spain',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Miami',
-        country: 'United States',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Vienna',
-        country: 'Austria',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Berlin',
-        country: 'Germany',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Toronto',
-        country: 'Canada',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Brussels',
-        country: 'Belgium',
-        isDefault: false),
-    City(
-        isSelected: false,
-        name: 'Nairobi',
-        country: 'Kenya',
-        isDefault: false),
-  ];
 }
 

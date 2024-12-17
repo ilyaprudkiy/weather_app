@@ -33,8 +33,7 @@ class WeatherScreenCubit extends Cubit<WeatherScreenState> {
   final _dataProvider = CityDataProvider();
   final _weatherProvider = WeatherDataProvider();
 
-  WeatherScreenCubit(WeatherScreenState weatherScreenState)
-      : super(WeatherScreenState.initial()) {
+  WeatherScreenCubit(WeatherScreenState weatherScreenState) : super(WeatherScreenState.initial()) {
     getUsersCity();
     getWeather();
   }

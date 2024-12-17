@@ -3,14 +3,14 @@ part 'weather.g.dart';
 
 @JsonSerializable()
 class WeatherData {
-  final String name;
-  final int id;
-  final String country;
-  final double temperature;
-  final double maxTemperature;
-  final double minTemperature;
-  final int sunrise;
-  final int sunset;
+  final String? name;
+  final int? id;
+  final String? country;
+  final double? temperature;
+  final double? maxTemperature;
+  final double? minTemperature;
+  final int? sunrise;
+  final int? sunset;
 
   WeatherData(
       {required this.sunrise,

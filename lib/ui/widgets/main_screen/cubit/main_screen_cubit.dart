@@ -1,11 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:weather_app/data_provider/city_data_provider.dart';
-import '../../../../domain/entity/list_city.dart';
+import 'package:weather_app/utils/cities_loader.dart';
 
 class MainScreenState {
-  final List<City> cities;
+  final List<CityItem> cities;
   final bool isSelected;
-  final List<City> userCity;
+  final List<CityItem> userCity;
 
   MainScreenState({
     required this.cities,
@@ -19,7 +19,7 @@ class MainScreenState {
         isSelected = false;
 
   MainScreenState copyWith(
-      {List<City>? cities, bool? isSelected, List<City>? userCity}) {
+      {List<CityItem>? cities, bool? isSelected, List<CityItem>? userCity}) {
     return MainScreenState(
       cities: cities ?? this.cities,
       userCity: userCity ?? this.userCity,
@@ -31,61 +31,12 @@ class MainScreenState {
 class MainScreenCubit extends Cubit<MainScreenState> {
   final _citiesDataProvider = CityDataProvider();
 
-  MainScreenCubit(MainScreenState mainScreenState)
-      : super(MainScreenState.initial()) {
-    getCity();
+  MainScreenCubit(MainScreenState mainScreenState) : super(MainScreenState.initial()) {
+    getCitiesList();
   }
 
-  void getCity() async {
-    final city = City.citiesList;
-    emit(state.copyWith(cities: city));
-  }
-
-  // void isSelectedCity(int index) async {
-  //   if (state.cities[index].isSelected == false) {
-  //     final updatedCity = state.cities[index].copyWith(isSelected: true);
-  //     final updatedCities = List<City>.from(state.cities);
-  //     updatedCities[index] = updatedCity;
-  //
-  //     emit(state.copyWith(cities: updatedCities));
-  //    final  userSelectedCity = state.cities[index];
-  //
-  //     if (!Hive.isAdapterRegistered(1)) Hive.registerAdapter(CityAdapter());
-  //     final box = await Hive.openBox<City>('user_city');
-  //     await box.put(index, userSelectedCity);
-  //     await box.close();
-  //   } else {
-  //     final updatedCity = state.cities[index].copyWith(isSelected: false);
-  //     final updatedCities = List<City>.from(state.cities);
-  //     updatedCities[index] = updatedCity;
-  //     emit(state.copyWith(cities: updatedCities));
-  //
-  //     if (!Hive.isAdapterRegistered(1)) Hive.registerAdapter(CityAdapter());
-  //     final box = await Hive.openBox<City>('user_city');
-  //     await box.deleteAt(index);
-  //     await box.close();
-  //   }
-  // }
-
-  void isSelectedCity(int index) async {
-    // Получаем текущее состояние выбранного города
-    final currentCity = state.cities[index];
-    final isSelected = currentCity.isSelected;
-
-    // Обновляем статус выбранного города
-    final updatedCity = currentCity.copyWith(isSelected: !isSelected);
-    final updatedCities = List<City>.from(state.cities);
-    updatedCities[index] = updatedCity;
-
-    // Обновляем состояние
-    emit(state.copyWith(cities: updatedCities));
-
-    if (!isSelected) {
-      // Если город не был выбран, то сохраняем его
-      await _citiesDataProvider.addCity(index, updatedCity);
-    } else {
-      // Если город был выбран, то удаляем его
-      await _citiesDataProvider.removeCity(index);
-    }
+  void getCitiesList() async {
+    final cities = await loadCities();
+    emit(state.copyWith(cities: cities));
   }
 }

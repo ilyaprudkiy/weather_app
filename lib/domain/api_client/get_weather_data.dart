@@ -4,8 +4,8 @@ import 'package:weather_app/domain/configuration/configuration.dart';
 import 'package:weather_app/domain/entity/weather.dart';
 
 class ApiWeatherData {
-  Future<List<WeatherData>> fetchWeather() async {
-    final response = await http.get(Uri.parse(Configutation.host));
+  Future<List<WeatherData>> fetchWeather({required String lat, required String lon,}) async {
+    final response = await http.get(Uri.parse(Configutation.host(lat: lat, lon: lon)));
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);

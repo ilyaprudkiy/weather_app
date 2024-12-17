@@ -7,14 +7,14 @@ part of 'weather.dart';
 // **************************************************************************
 
 WeatherData _$WeatherDataFromJson(Map<String, dynamic> json) => WeatherData(
-      sunrise: (json['sunrise'] as num).toInt(),
-      sunset: (json['sunset'] as num).toInt(),
-      name: json['name'] as String,
-      id: (json['id'] as num).toInt(),
-      country: json['country'] as String,
-      temperature: (json['temperature'] as num).toDouble(),
-      maxTemperature: (json['maxTemperature'] as num).toDouble(),
-      minTemperature: (json['minTemperature'] as num).toDouble(),
+      sunrise: (json['sunrise'] as num?)?.toInt(),
+      sunset: (json['sunset'] as num?)?.toInt(),
+      name: json['name'] as String?,
+      id: (json['id'] as num?)?.toInt(),
+      country: json['country'] as String?,
+      temperature: (json['temperature'] as num?)?.toDouble(),
+      maxTemperature: (json['maxTemperature'] as num?)?.toDouble(),
+      minTemperature: (json['minTemperature'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$WeatherDataToJson(WeatherData instance) =>
