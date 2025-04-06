@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:weather_app/utils/cities_loader.dart';
 part 'list_city.g.dart';
 
 @HiveType(typeId: 1)

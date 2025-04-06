@@ -5,26 +5,35 @@ part of 'weather.dart';
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
-
 WeatherData _$WeatherDataFromJson(Map<String, dynamic> json) => WeatherData(
-      sunrise: (json['sunrise'] as num?)?.toInt(),
-      sunset: (json['sunset'] as num?)?.toInt(),
+      id: json['id'] as int?,
       name: json['name'] as String?,
-      id: (json['id'] as num?)?.toInt(),
-      country: json['country'] as String?,
-      temperature: (json['temperature'] as num?)?.toDouble(),
-      maxTemperature: (json['maxTemperature'] as num?)?.toDouble(),
-      minTemperature: (json['minTemperature'] as num?)?.toDouble(),
-    );
+      country: json['sys']?['country'] as String?,
+      temperature: json['main']?['temp']?.toDouble(),
+      minTemperature: json['main']?['temp_min']?.toDouble(),
+      maxTemperature: json['main']?['temp_max']?.toDouble(),
+      humidity: json['main']?['humidity'] as int?,
+      windSpeed: json['wind']?['speed']?.toDouble(),
+      weatherDescription: (json['weather'] as List<dynamic>?)
+          ?.first['description'] as String?,
+      icon: (json['weather'] as List<dynamic>?)
+          ?.first['icon'] as String?,
+      sunrise: json['sys']?['sunrise'] as int?,
+      sunset: json['sys']?['sunset'] as int?,
+);
 
 Map<String, dynamic> _$WeatherDataToJson(WeatherData instance) =>
     <String, dynamic>{
-      'name': instance.name,
       'id': instance.id,
+      'name': instance.name,
       'country': instance.country,
       'temperature': instance.temperature,
-      'maxTemperature': instance.maxTemperature,
       'minTemperature': instance.minTemperature,
+      'maxTemperature': instance.maxTemperature,
+      'humidity': instance.humidity,
+      'windSpeed': instance.windSpeed,
+      'weatherDescription': instance.weatherDescription,
+      'icon': instance.icon,
       'sunrise': instance.sunrise,
       'sunset': instance.sunset,
     };

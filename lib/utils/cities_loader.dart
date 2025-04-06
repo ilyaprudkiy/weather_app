@@ -19,6 +19,7 @@ class CityItem {
   }
 }
 
+
 Future<List<CityItem>> loadCities() async {
   final String response = await rootBundle.loadString('assets/cities_list.json');
   final List<dynamic> data = json.decode(response);
