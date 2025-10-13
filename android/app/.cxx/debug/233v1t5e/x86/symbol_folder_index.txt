@@ -1,0 +1,1 @@
+C:\Users\Masha\StudioProjects\weather_app\android\app\build\intermediates\cxx\debug\233v1t5e\obj\x86

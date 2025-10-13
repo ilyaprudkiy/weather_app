@@ -1,0 +1,2 @@
+C:/Users/Masha/StudioProjects/weather_app/android/app/.cxx/debug/233v1t5e/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/Masha/StudioProjects/weather_app/android/app/.cxx/debug/233v1t5e/x86_64/CMakeFiles/rebuild_cache.dir
