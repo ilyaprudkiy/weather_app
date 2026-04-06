@@ -1,30 +1,71 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:weather_app/ui/navigation/navigation.dart';
-import 'config/configuration/configuration.dart';
-import 'data/auth_data_provider.dart';
-import 'domain/entity/list_city.dart';
-import 'domain/repository/auth_repository.dart';
+import 'core/di/service_locator.dart';
+import 'navigation/navigation.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
+  runApp(const BootstrapApp());
+}
 
-  final appDocumentDir = await getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDir.path);
+class BootstrapApp extends StatefulWidget {
+  const BootstrapApp({super.key});
 
-  if (!Hive.isAdapterRegistered(1)) {
-    Hive.registerAdapter(CityAdapter());
+  @override
+  State<BootstrapApp> createState() => _BootstrapAppState();
+}
+
+class _BootstrapAppState extends State<BootstrapApp> {
+  late final Future<void> _initFuture;
+
+  Future<void> _init() async {
+    await Supabase.initialize(
+      url: 'https://ijqugaqrpljhmilinlol.supabase.co',
+      anonKey: 'sb_publishable_fDgWW7zxCoJaP44W3AAV1Q_1n3oSw1Y',
+    ).timeout(const Duration(seconds: 15));
+
+    await initServiceLocator().timeout(const Duration(seconds: 5));
   }
 
-  await Supabase.initialize(
-    url: Configuration.urlSupabase,
-    anonKey: Configuration.anonKey,
-  );
+  @override
+  void initState() {
+    super.initState();
+    _initFuture = _init();
+  }
 
-  runApp(const MyApp());
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<void>(
+      future: _initFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState != ConnectionState.done) {
+          return const MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            ),
+          );
+        }
+        if (snapshot.hasError) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            home: Scaffold(
+              body: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(
+                    'Init error: ${snapshot.error}',
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ),
+          );
+        }
+        return const MyApp();
+      },
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -34,20 +75,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-
-      providers: [
-        RepositoryProvider<AuthRepository>(
-          create: (_) => AuthRepositoryImpl(
-            authDataProvider: AuthDataProvider(),
-          ),
-        ),
-      ],
-      child: MaterialApp(
-        routes: mainNavigation.routes,
-        debugShowCheckedModeBanner: false,
-        initialRoute: MainNavigationRouteNames.loaderWidget,
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      routes: mainNavigation.routes,
+      initialRoute: MainNavigationRouteNames.loaderWidget,
     );
   }
 }
