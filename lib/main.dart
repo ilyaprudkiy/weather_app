@@ -78,7 +78,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       routes: mainNavigation.routes,
-      initialRoute: MainNavigationRouteNames.loaderWidget,
+      initialRoute: MainNavigationRouteNames.welcomeScreen,
     );
   }
 }

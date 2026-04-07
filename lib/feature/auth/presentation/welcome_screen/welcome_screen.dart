@@ -15,22 +15,17 @@ class WelcomeScreen extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFE0EAFC), // верх
-              Color(0xFFCFDEF3), // низ
-            ],
-          )),
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xFFE0EAFC), // верх
+          Color(0xFFCFDEF3), // низ
+        ],
+      )),
       child: Scaffold(
         body: BlocListener<WelcomeScreenCubit, WelcomeScreenState>(
-          listener: (context, state) {
-              Timer(const Duration(seconds: 2), () {
-                Navigator.of(context)
-                    .pushNamed(MainNavigationRouteNames.weatherScreen);
-              });
-
-          },
+          listenWhen: (prev, current) => current != WelcomeScreenState.unknown,
+          listener: onChangeWelcomeState,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -99,8 +94,7 @@ class WelcomeScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 16),
                     )),
-
-                  const Center(child: CircularProgressIndicator())
+                const Center(child: CircularProgressIndicator())
               ],
             ),
           ),
@@ -108,4 +102,11 @@ class WelcomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+void onChangeWelcomeState(BuildContext context, WelcomeScreenState state) {
+  final nextScreen = state == WelcomeScreenState.authorized
+      ? MainNavigationRouteNames.weatherScreen
+      : MainNavigationRouteNames.welcomeScreen;
+  Navigator.of(context).pushReplacementNamed(nextScreen);
 }

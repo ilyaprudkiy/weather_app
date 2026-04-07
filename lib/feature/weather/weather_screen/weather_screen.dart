@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../navigation/navigation.dart';
 import 'cubit/weather_screen_cubit.dart';
 
 class WeatherScreenWidget extends StatelessWidget {
@@ -67,10 +66,7 @@ class CurrentCityWidget extends StatelessWidget {
         height: 50,
         width: 250,
         child: TextField(
-          onTap: () {
-            Navigator.of(context)
-                .pushNamed(MainNavigationRouteNames.mainScreen);
-          },
+          onTap: () {},
           readOnly: true,
           textAlignVertical: TextAlignVertical.center,
           decoration: InputDecoration(

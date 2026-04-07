@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/di/service_locator.dart';
 import '../../feature/auth/presentation/login_screen/cubit/login_screen_cubit.dart';
 import '../../feature/auth/presentation/login_screen/login_screen.dart';
 import '../../feature/auth/presentation/sign_up_screen/cubit/sign_up_screen_cubit.dart';
@@ -22,9 +23,9 @@ class ScreenFactory {
     );
   }
 
-  Widget makeLoader() {
+  Widget makeWelcomeScreen() {
     return BlocProvider<WelcomeScreenCubit>(
-      create: (context) => WelcomeScreenCubit(WelcomeScreenState.unknown),
+      create: (context) => sl<WelcomeScreenCubit>(),
       lazy: false,
       child: const WelcomeScreen(),
     );
