@@ -18,4 +18,5 @@ Future<void> initServiceLocator() async {
       () => AuthRepositoryImpl(sl<AuthRemoteDataSource>()));
   sl.registerLazySingleton<AuthRemoteDataSource>(
       () => SupabaseRemoteDataSource(sl<SupabaseClientProvider>()));
+  sl.registerLazySingleton(() => SupabaseClientProvider());
 }
