@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/buttons/app_buttons.dart';
 import '../../../../navigation/navigation.dart';
-import 'cubit/sign_up_screen_cubit.dart';
 
 class SignUpScreenWidget extends StatefulWidget {
   const SignUpScreenWidget({super.key});
@@ -16,6 +14,14 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final repeatPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    repeatPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +134,6 @@ class ButtonSignUpWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.watch<SignUpCubit>();
     return Container(
         height: 60,
         width: 200,

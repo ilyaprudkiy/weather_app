@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:weather_app/core/config/configuration/configuration.dart';
 import 'core/di/service_locator.dart';
 import 'navigation/navigation.dart';
 
@@ -20,8 +21,8 @@ class _BootstrapAppState extends State<BootstrapApp> {
 
   Future<void> _init() async {
     await Supabase.initialize(
-      url: 'https://ijqugaqrpljhmilinlol.supabase.co',
-      anonKey: 'sb_publishable_fDgWW7zxCoJaP44W3AAV1Q_1n3oSw1Y',
+      url: Configuration.urlSupabase,
+      anonKey: Configuration.anonKey,
     ).timeout(const Duration(seconds: 15));
 
     await initServiceLocator().timeout(const Duration(seconds: 5));
