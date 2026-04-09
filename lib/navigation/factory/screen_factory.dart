@@ -33,7 +33,7 @@ class ScreenFactory {
 
   Widget signUpScreen(BuildContext context) {
     return BlocProvider<SignUpCubit>(
-      create: (_) => SignUpCubit(SignUpInitial()),
+      create: (context) => sl<SignUpCubit>(),
       lazy: false,
       child: const SignUpScreenWidget(),
     );

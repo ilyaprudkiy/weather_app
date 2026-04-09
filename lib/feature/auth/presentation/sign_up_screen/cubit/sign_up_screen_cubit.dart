@@ -1,8 +1,9 @@
 import 'package:bloc/bloc.dart';
+import '../../../domain/use_cases/auth_use_cases.dart';
 
 abstract class SignUpScreenState {}
 
-class SignUpInitial extends SignUpScreenState {}
+class SignUpInitialState extends SignUpScreenState {}
 
 class LoadingStateSignUpScreen extends SignUpScreenState {}
 
@@ -17,5 +18,9 @@ class ErrorStateSignUpScreen extends SignUpScreenState {
 }
 
 class SignUpCubit extends Cubit<SignUpScreenState> {
-  SignUpCubit(super.initialState);
+  final AuthUseCase useCase;
+
+  SignUpCubit(
+    this.useCase,
+  ) : super(SignUpInitialState());
 }
