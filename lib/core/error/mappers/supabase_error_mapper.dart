@@ -6,29 +6,25 @@ import 'package:weather_app/core/error/failure/failure.dart';
 class SupabaseErrorMapper {
   Failure map(Object e, {String? context}) {
     if (e is SocketException) {
-      return NetworkFailure(
-          message: 'Нет подключения к интернету',
+      return NetworkFailure('Нет подключения к интернету',
           debugMessage: '${context ?? ''}$e ');
     }
     if (e is TimeoutException) {
-      return NetworkFailure(
-          message: 'Привышено время ожидания',
+      return NetworkFailure('Привышено время ожидания',
           debugMessage: '${context ?? ''}$e');
     }
     if (e is AuthException) {
       final uiMes = _authUiMessage(e.message);
-      return AuthFailure(
-          message: uiMes, debugMessage: '${context ?? ''}${e.message}');
+      return AuthFailure(uiMes, debugMessage: '${context ?? ''}${e.message}');
     }
     if (e is PostgrestException) {
       final uiMes = _postgresUiMessage(e);
-      return ServerFailure(
-          message: uiMes,
+      return ServerFailure(uiMes,
           debugMessage:
               '${context ?? ''} ${e.message} | ${e.details} |${e.hint}');
     }
-    return UnknownFailure(
-        message: ('Неизвестная ошибка'), debugMessage: '${context ?? ''} $e');
+    return UnknownFailure(('Неизвестная ошибка'),
+        debugMessage: '${context ?? ''} $e');
   }
 
   String _authUiMessage(String raw) {

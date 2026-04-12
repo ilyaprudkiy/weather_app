@@ -2,25 +2,25 @@ sealed class Failure {
   final String message;
   final String? debugMessage;
 
-  Failure({required this.message, required this.debugMessage});
+  const Failure(this.message, {this.debugMessage});
 }
 
 class ValidationFailure extends Failure {
-  ValidationFailure({required super.message, required super.debugMessage});
+ const  ValidationFailure(super.message, {super.debugMessage});
 }
 
 class NetworkFailure extends Failure {
-  NetworkFailure({required super.message, required super.debugMessage});
+ const  NetworkFailure(super.message, {super.debugMessage});
 }
 
 class AuthFailure extends Failure {
-  AuthFailure({required super.message, required super.debugMessage});
+ const  AuthFailure(super.message, {super.debugMessage});
 }
 
 class ServerFailure extends Failure {
-  ServerFailure({required super.message, required super.debugMessage});
+const   ServerFailure(super.message, {super.debugMessage});
 }
 
 class UnknownFailure extends Failure {
-  UnknownFailure({required super.message, required super.debugMessage});
+ const  UnknownFailure(super.message, {super.debugMessage});
 }
