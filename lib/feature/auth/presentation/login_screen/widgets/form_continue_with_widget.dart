@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../../../core/config/configuration/network_icons/network_icons.dart';
 
 
-class FormContieniueWithWidget extends StatelessWidget {
-  const FormContieniueWithWidget({
+class FormContinueWithWidget extends StatelessWidget {
+  const FormContinueWithWidget({
     super.key,
   });
 
@@ -20,7 +20,7 @@ class FormContieniueWithWidget extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(15),
               child: Text(
-                'or continiue with',
+                'or continue with',
                 style: TextStyle(
                     color: Colors.black45,
                     fontSize: 16,

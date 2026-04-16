@@ -1,11 +1,12 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:weather_app/core/result/result.dart';
 
 abstract class AuthRepository {
-  Future<void> signIn(String email, String password);
+  Future<ResultVoid> signIn(String email, String password);
 
-  Future<void> signUp(String email, String password);
+  Future<ResultVoid> signUp(String email, String password);
 
-  Future<void> signOut();
+  Future<ResultVoid> signOut();
 
   Session? get getCurrentSession;
 }

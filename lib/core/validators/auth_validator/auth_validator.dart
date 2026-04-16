@@ -3,7 +3,7 @@ import 'package:weather_app/core/validators/auth_validator/email_validator.dart'
 import 'package:weather_app/core/validators/auth_validator/password_validator.dart';
 
 class AuthValidator {
-  static ValidationFailure? _validateCredentials(
+  ValidationFailure? _validateCredentials(
       {required String password, required String email}) {
     final emailFailure = EmailValidator.emailValidate(email);
     if (emailFailure != null) {
@@ -16,27 +16,37 @@ class AuthValidator {
     return null;
   }
 
-  static ValidationFailure? signUpValidate(
+  ValidationFailure? signUpValidate(
       {required String email,
       required String password,
       required String repeatPassword,
       required String? context}) {
-    _validateCredentials(password: password, email: email);
+    final failure = _validateCredentials(password: password, email: email);
+    if (failure != null) {
+      return failure;
+    }
     if (password.trim().isEmpty) {
+      return ValidationFailure('fill in the password field',
+          debugMessage: context ?? '');
+    }
+    if (repeatPassword.trim().isEmpty) {
       return ValidationFailure('Repeat password', debugMessage: context ?? '');
     }
     if (password != repeatPassword) {
-      return ValidationFailure('', debugMessage: context ?? '');
+      return ValidationFailure('Passwords do not match',
+          debugMessage: context ?? '');
     }
     return null;
   }
 
-  static ValidationFailure? loginValidate(
-      {required String password, required String email}) {
+  ValidationFailure? loginValidate(
+      {required String password,
+      required String email,
+      required String? context}) {
     return _validateCredentials(password: password, email: email);
   }
 
-  static ValidationFailure? logoutValidate(String email) {
+  ValidationFailure? logoutValidate(String email) {
     return EmailValidator.emailValidate(email);
   }
 }

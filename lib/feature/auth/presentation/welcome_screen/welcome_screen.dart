@@ -93,7 +93,6 @@ class WelcomeScreen extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 16),
                     )),
-                const Center(child: CircularProgressIndicator())
               ],
             ),
           ),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app/feature/auth/presentation/sign_up_screen/cubit/sign_up_screen_cubit.dart';
 import '../../../../core/buttons/app_buttons.dart';
 import '../../../../navigation/navigation.dart';
 
@@ -43,7 +45,7 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
                   AppButtonTextField(
                     controller: repeatPasswordController,
                     color: Colors.cyan,
-                    hintText: 'Name',
+                    hintText: 'Repeat password',
                     icon: Icons.perm_identity_outlined,
                     prefixIconColor: Colors.blue.shade800,
                   ),
@@ -74,6 +76,7 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
                       child: ButtonSignUpWidget(
                     email: emailController.text,
                     password: passwordController.text,
+                    repeatPassword: repeatPasswordController.text,
                   )),
                 ],
               )
@@ -128,12 +131,17 @@ class BackgroundPainter extends CustomPainter {
 class ButtonSignUpWidget extends StatelessWidget {
   final String password;
   final String email;
+  final String repeatPassword;
 
   const ButtonSignUpWidget(
-      {super.key, required this.password, required this.email});
+      {super.key,
+      required this.password,
+      required this.email,
+      required this.repeatPassword});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<SignUpCubit>();
     return Container(
         height: 60,
         width: 200,
@@ -143,7 +151,7 @@ class ButtonSignUpWidget extends StatelessWidget {
         ),
         child: ElevatedButton(
             onPressed: () {
-              // cubit.registeredUser(email, password);
+              cubit.signUp(password, email, repeatPassword);
               Navigator.of(context)
                   .pushNamed(MainNavigationRouteNames.weatherScreen);
             },

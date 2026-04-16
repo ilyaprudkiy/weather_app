@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/feature/auth/presentation/login_screen/widgets/form_button_login_forgot_widget.dart';
-import 'package:weather_app/feature/auth/presentation/login_screen/widgets/form_contienie_with_widget.dart';
-import 'package:weather_app/feature/auth/presentation/login_screen/widgets/form_lodin_and_password_widget.dart';
+import 'package:weather_app/feature/auth/presentation/login_screen/widgets/form_continue_with_widget.dart';
+import 'package:weather_app/feature/auth/presentation/login_screen/widgets/form_login_and_password_widget.dart';
 import 'package:weather_app/feature/auth/presentation/login_screen/widgets/text_welcome_widget.dart';
 import '../../../../core/constant/widgets/custom_painter.dart';
 
@@ -15,6 +15,13 @@ class LoginScreenWidget extends StatefulWidget {
 class _LoginScreenWidgetState extends State<LoginScreenWidget> {
   final loginTextFieldController = TextEditingController();
   final passwordTextFieldController = TextEditingController();
+
+  @override
+  void dispose() {
+    loginTextFieldController.dispose();
+    passwordTextFieldController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +65,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                         loginTextFieldController: loginTextFieldController,
                         passwordTextFieldController:
                             passwordTextFieldController),
+                    ElevatedButton(onPressed: (){}, child: const  Text('Login') ),
                     const SizedBox(
                       height: 30,
                     ),
@@ -65,7 +73,7 @@ class _LoginScreenWidgetState extends State<LoginScreenWidget> {
                     const SizedBox(
                       height: 20,
                     ),
-                    const FormContieniueWithWidget(),
+                    const FormContinueWithWidget(),
                   ],
                 ),
               ),

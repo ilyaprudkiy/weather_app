@@ -16,6 +16,7 @@ class WeatherScreenWidget extends StatelessWidget {
           children: [
             AppBarWidget(),
             Padding(padding: EdgeInsets.all(10), child: TemperatureWidget()),
+
           ],
         )
       ]),

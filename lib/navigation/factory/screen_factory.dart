@@ -15,9 +15,7 @@ import '../../feature/weather/weather_screen/weather_screen.dart';
 class ScreenFactory {
   Widget loginScreen() {
     return BlocProvider<LoginScreenCubit>(
-      create: (_) => LoginScreenCubit(
-        LoginScreenState(),
-      ),
+      create: (context) => sl<LoginScreenCubit>(),
       lazy: false,
       child: const LoginScreenWidget(),
     );
