@@ -31,58 +31,77 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
         backgroundColor: Colors.white,
         body: CustomPaint(
           painter: BackgroundPainter(),
-          child: Stack(
-            children: [
-              const Positioned(
-                  height: 70,
-                  top: 200,
-                  right: 100,
-                  child: TextCreateAccountWidget()),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppButtonTextField(
-                    controller: repeatPasswordController,
-                    color: Colors.cyan,
-                    hintText: 'Repeat password',
-                    icon: Icons.perm_identity_outlined,
-                    prefixIconColor: Colors.blue.shade800,
+          child: BlocConsumer<SignUpCubit, SignUpScreenState>(
+              listener: _onChangeSignUpState,
+              builder: (context, state) {
+                return SingleChildScrollView(
+                  child: Stack(
+                    children: [
+                      const Positioned(
+                          height: 70,
+                          top: 200,
+                          right: 100,
+                          child: TextCreateAccountWidget()),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppButtonTextField(
+                            controller: repeatPasswordController,
+                            color: Colors.cyan,
+                            hintText: 'Repeat password',
+                            icon: Icons.perm_identity_outlined,
+                            prefixIconColor: Colors.blue.shade800,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          AppButtonTextField(
+                            controller: emailController,
+                            color: Colors.cyan,
+                            hintText: 'Email',
+                            icon: Icons.email,
+                            prefixIconColor: Colors.blue.shade800,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          AppButtonTextField(
+                            controller: passwordController,
+                            color: Colors.blueAccent,
+                            hintText: 'Password',
+                            icon: Icons.lock_open,
+                            prefixIconColor: Colors.blue.shade800,
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Positioned(
+                              child: ButtonSignUpWidget(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            repeatPassword: repeatPasswordController.text,
+                          )),
+                        ],
+                      )
+                    ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  AppButtonTextField(
-                    controller: emailController,
-                    color: Colors.cyan,
-                    hintText: 'Email',
-                    icon: Icons.email,
-                    prefixIconColor: Colors.blue.shade800,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  AppButtonTextField(
-                    controller: passwordController,
-                    color: Colors.blueAccent,
-                    hintText: 'Password',
-                    icon: Icons.lock_open,
-                    prefixIconColor: Colors.blue.shade800,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Positioned(
-                      child: ButtonSignUpWidget(
-                    email: emailController.text,
-                    password: passwordController.text,
-                    repeatPassword: repeatPasswordController.text,
-                  )),
-                ],
-              )
-            ],
-          ),
+                );
+              }),
         ));
+  }
+
+  void _onChangeSignUpState(BuildContext context, SignUpScreenState state) {
+    if (state is SignUpErrorState) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(state.error),
+        behavior: SnackBarBehavior.floating,
+      ));
+    }
+    if (state is SignUpSuccessState) {
+      final nextScreen = MainNavigationRouteNames.weatherScreen;
+      Navigator.of(context).pushReplacementNamed(nextScreen);
+    }
   }
 }
 
@@ -152,8 +171,6 @@ class ButtonSignUpWidget extends StatelessWidget {
         child: ElevatedButton(
             onPressed: () {
               cubit.signUp(password, email, repeatPassword);
-              Navigator.of(context)
-                  .pushNamed(MainNavigationRouteNames.weatherScreen);
             },
             child: Text('Sign up',
                 style: GoogleFonts.poppins(

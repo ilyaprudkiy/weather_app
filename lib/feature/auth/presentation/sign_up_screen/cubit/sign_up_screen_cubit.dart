@@ -9,7 +9,7 @@ class SignUpInitialState extends SignUpScreenState {}
 class SignUpLoadingState extends SignUpScreenState {}
 
 class SignUpErrorState extends SignUpScreenState {
-  final String? error;
+  final String error;
   final String debugMessage;
 
   SignUpErrorState(this.error, this.debugMessage);
@@ -24,8 +24,7 @@ class SignUpCubit extends Cubit<SignUpScreenState> {
     this.useCase,
   ) : super(SignUpInitialState());
 
-  Future<void> sig
-      String password, String email, String repeatPassword) async {
+  Future<void> signUp(String password, String email, String repeatPassword) async {
     emit(SignUpLoadingState());
     final res = await useCase.signUp(
         password: password, email: email, repeatPassword: repeatPassword);

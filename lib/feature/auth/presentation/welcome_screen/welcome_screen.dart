@@ -24,7 +24,7 @@ class WelcomeScreen extends StatelessWidget {
       child: Scaffold(
         body: BlocListener<WelcomeScreenCubit, WelcomeScreenState>(
           listenWhen: (prev, current) => current != WelcomeScreenState.unknown,
-          listener: onChangeWelcomeState,
+          listener: _onChangeWelcomeState,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -102,7 +102,7 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
-void onChangeWelcomeState(BuildContext context, WelcomeScreenState state) {
+void _onChangeWelcomeState(BuildContext context, WelcomeScreenState state) {
   final nextScreen = state == WelcomeScreenState.authorized
       ? MainNavigationRouteNames.weatherScreen
       : MainNavigationRouteNames.welcomeScreen;
