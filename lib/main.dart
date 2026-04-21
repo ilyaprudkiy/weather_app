@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:weather_app/core/config/configuration/configuration.dart';
 import 'core/di/service_locator.dart';
+import 'feature/auth/presentation/cubit/auth_cubit.dart';
 import 'navigation/navigation.dart';
 
 void main() {
@@ -63,7 +65,11 @@ class _BootstrapAppState extends State<BootstrapApp> {
             ),
           );
         }
-        return const MyApp();
+        return MultiBlocProvider(providers: [
+          BlocProvider<AuthCubit>(
+            create: (_) => sl<AuthCubit>(),
+          )
+        ], child: const MyApp());
       },
     );
   }
