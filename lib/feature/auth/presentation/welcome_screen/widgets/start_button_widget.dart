@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/feature/auth/presentation/cubit/auth_cubit.dart';
 import '../../../../../navigation/navigation.dart';
-import '../cubit/welcome_screen_cubit.dart';
 
-class SingUpButtonWidget extends StatelessWidget {
-  const SingUpButtonWidget({
+
+class SignUpButtonWidget extends StatelessWidget {
+  const SignUpButtonWidget({
     super.key,
     required this.cubit,
   });
 
-  final WelcomeScreenCubit cubit;
+  final AuthCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 120,
+    return Center(
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
@@ -38,7 +38,7 @@ class SingUpButtonWidget extends StatelessWidget {
                 .pushNamed(MainNavigationRouteNames.signUpScreen);
           },
           child: const Text(
-            'Sing up',
+            'Sign up',
             style: TextStyle(
                 color: Colors.white, fontSize: 21, fontWeight: FontWeight.bold),
           ),
@@ -54,12 +54,11 @@ class LoginButtonWidget extends StatelessWidget {
     required this.cubit,
   });
 
-  final WelcomeScreenCubit cubit;
+  final AuthCubit cubit;
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 120,
+    return Center(
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),

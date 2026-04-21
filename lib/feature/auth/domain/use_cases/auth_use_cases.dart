@@ -26,15 +26,15 @@ class AuthUseCase {
 
   Future<ResultVoid> login(
       {required String password, required String email}) async {
-    final validationFailure =
-        validator.loginValidate(password: password, email: email,context:'AuthUseCase.login');
+    final validationFailure = validator.loginValidate(
+        password: password, email: email, context: 'AuthUseCase.login');
     if (validationFailure != null) {
       return Err(validationFailure);
     }
     return repo.signIn(email, password);
   }
 
-  Future<void> logout() {
+  Future<ResultVoid> logout() async {
     return repo.signOut();
   }
 
