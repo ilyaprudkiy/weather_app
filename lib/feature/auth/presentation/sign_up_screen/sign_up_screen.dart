@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:weather_app/feature/auth/presentation/sign_up_screen/cubit/sign_up_screen_cubit.dart';
 import '../../../../core/buttons/app_buttons.dart';
 import '../../../../navigation/navigation.dart';
+import '../cubit/auth_cubit.dart';
 
 class SignUpScreenWidget extends StatefulWidget {
   const SignUpScreenWidget({super.key});
@@ -13,15 +13,20 @@ class SignUpScreenWidget extends StatefulWidget {
 }
 
 class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final repeatPasswordController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _repeatPasswordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    repeatPasswordController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _repeatPasswordController.dispose();
     super.dispose();
   }
 
@@ -31,74 +36,73 @@ class _SignUpScreenWidgetState extends State<SignUpScreenWidget> {
         backgroundColor: Colors.white,
         body: CustomPaint(
           painter: BackgroundPainter(),
-          child: BlocConsumer<SignUpCubit, SignUpScreenState>(
-              listener: _onChangeSignUpState,
-              builder: (context, state) {
-                return SingleChildScrollView(
-                  child: Stack(
-                    children: [
-                      const Positioned(
-                          height: 70,
-                          top: 200,
-                          right: 100,
-                          child: TextCreateAccountWidget()),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          AppButtonTextField(
-                            controller: repeatPasswordController,
-                            color: Colors.cyan,
-                            hintText: 'Repeat password',
-                            icon: Icons.perm_identity_outlined,
-                            prefixIconColor: Colors.blue.shade800,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          AppButtonTextField(
-                            controller: emailController,
-                            color: Colors.cyan,
-                            hintText: 'Email',
-                            icon: Icons.email,
-                            prefixIconColor: Colors.blue.shade800,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          AppButtonTextField(
-                            controller: passwordController,
-                            color: Colors.blueAccent,
-                            hintText: 'Password',
-                            icon: Icons.lock_open,
-                            prefixIconColor: Colors.blue.shade800,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Positioned(
-                              child: ButtonSignUpWidget(
-                            email: emailController.text,
-                            password: passwordController.text,
-                            repeatPassword: repeatPasswordController.text,
-                          )),
-                        ],
-                      )
-                    ],
-                  ),
-                );
-              }),
+            child: Stack(
+              children: [
+                BlocConsumer<AuthCubit, AuthState>(
+                  listener: _onChangeSignUpState,
+                  builder: (context, state) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Positioned(
+                            height: 70,
+                            top: 200,
+                            right: 100,
+                            child: TextCreateAccountWidget()),
+                        AppButtonTextField(
+                          controller: _emailController,
+                          color: Colors.cyan,
+                          hintText: 'Email',
+                          icon: Icons.email,
+                          prefixIconColor: Colors.blue.shade800,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        AppButtonTextField(
+                          controller: _passwordController,
+                          color: Colors.cyan,
+                          hintText: 'Password',
+                          icon: Icons.lock_open_outlined,
+                          prefixIconColor: Colors.blue.shade800,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        AppButtonTextField(
+                          controller: _repeatPasswordController,
+                          color: Colors.blueAccent,
+                          hintText: 'Repeat password',
+                          icon: Icons.password_outlined,
+                          prefixIconColor: Colors.blue.shade800,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Positioned(
+                            child: ButtonSignUpWidget(
+                          email: _emailController,
+                          password: _passwordController,
+                          repeatPassword: _repeatPasswordController,
+                        )),
+                      ],
+                    );
+                  },
+                )
+              ],
+            ),
+
         ));
   }
 
-  void _onChangeSignUpState(BuildContext context, SignUpScreenState state) {
-    if (state is SignUpErrorState) {
+  void _onChangeSignUpState(BuildContext context, AuthState state) {
+    if (state is ErrorState) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(state.error),
+        content: Text(state.message),
         behavior: SnackBarBehavior.floating,
       ));
-    }
-    if (state is SignUpSuccessState) {
+    } else if (state is AuthorizedState) {
       final nextScreen = MainNavigationRouteNames.weatherScreen;
       Navigator.of(context).pushReplacementNamed(nextScreen);
     }
@@ -148,9 +152,9 @@ class BackgroundPainter extends CustomPainter {
 }
 
 class ButtonSignUpWidget extends StatelessWidget {
-  final String password;
-  final String email;
-  final String repeatPassword;
+  final TextEditingController password;
+  final TextEditingController email;
+  final TextEditingController repeatPassword;
 
   const ButtonSignUpWidget(
       {super.key,
@@ -160,7 +164,7 @@ class ButtonSignUpWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<SignUpCubit>();
+    final cubit = context.read<AuthCubit>();
     return Container(
         height: 60,
         width: 200,
@@ -170,7 +174,7 @@ class ButtonSignUpWidget extends StatelessWidget {
         ),
         child: ElevatedButton(
             onPressed: () {
-              cubit.signUp(password, email, repeatPassword);
+              cubit.signUp(password.text, email.text, repeatPassword.text);
             },
             child: Text('Sign up',
                 style: GoogleFonts.poppins(
