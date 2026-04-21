@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import '../../../../../core/buttons/app_buttons.dart';
 
 class FormLoginAndPasswordWidget extends StatelessWidget {
-  const FormLoginAndPasswordWidget({
-    super.key,
-    required this.loginTextFieldController,
-    required this.passwordTextFieldController,
-  });
+  const FormLoginAndPasswordWidget(
+      this.loginTextFieldController, this.passwordTextFieldController,
+      {super.key});
 
   final TextEditingController loginTextFieldController;
   final TextEditingController passwordTextFieldController;

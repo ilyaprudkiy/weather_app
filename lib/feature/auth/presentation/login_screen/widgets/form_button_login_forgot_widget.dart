@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:weather_app/feature/auth/presentation/cubit/auth_cubit.dart';
 
 class FormButtonLoginForgotWidget extends StatelessWidget {
-  const FormButtonLoginForgotWidget({
-    super.key,
-  });
+final TextEditingController email;
+final TextEditingController password;
+
+  const FormButtonLoginForgotWidget(this.email, this.password, {super.key});
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.watch<AuthCubit>();
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
@@ -25,7 +29,9 @@ class FormButtonLoginForgotWidget extends StatelessWidget {
                   ),
                   elevation: 4,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  cubit.login(email.text, password.text);
+                },
                 child: Text(
                   'Login',
                   style: GoogleFonts.poppins(
