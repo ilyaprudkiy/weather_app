@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app/feature/auth/presentation/cubit/auth_cubit.dart';
+import 'package:weather_app/navigation/navigation.dart';
 import 'cubit/weather_screen_cubit.dart';
 
 class WeatherScreenWidget extends StatelessWidget {
@@ -7,20 +9,36 @@ class WeatherScreenWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<AuthCubit>();
     return Scaffold(
-        body: Stack(children: [
-      Image.network(
-          'https://media.istockphoto.com/id/2060491755/de/foto/sky-landscapes-collage-weather-forecast-global-warming-climate-change-support-environmental.jpg?s=2048x2048&w=is&k=20&c=O_KuckWo4nWNqvDy_hrNWRToZuUdKKkuDxiV3zpGZ4E='),
-      ListView(children: const [
-        Column(
-          children: [
-            AppBarWidget(),
-            Padding(padding: EdgeInsets.all(10), child: TemperatureWidget()),
-
-          ],
-        )
-      ]),
-    ]));
+      floatingActionButton: ElevatedButton(
+          onPressed: () {
+            cubit.logout();
+            if (cubit.state is NotAuthorizedState) {
+              Navigator.of(context)
+                  .pushReplacementNamed(MainNavigationRouteNames.welcomeScreen);
+            }
+          },
+          child: Text('Logout')),
+      body: SingleChildScrollView(
+          child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: double.infinity,
+        child: Stack(children: [
+          Image.network(
+              'https://media.istockphoto.com/id/2060491755/de/foto/sky-landscapes-collage-weather-forecast-global-warming-climate-change-support-environmental.jpg?s=2048x2048&w=is&k=20&c=O_KuckWo4nWNqvDy_hrNWRToZuUdKKkuDxiV3zpGZ4E='),
+          ListView(children: const [
+            Column(
+              children: [
+                AppBarWidget(),
+                Padding(
+                    padding: EdgeInsets.all(10), child: TemperatureWidget()),
+              ],
+            )
+          ]),
+        ]),
+      )),
+    );
   }
 }
 
